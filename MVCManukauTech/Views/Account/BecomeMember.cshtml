@@ -1,0 +1,110 @@
+﻿@model MVCManukauTech.Models.MemberShipViewModel
+@using CaptchaMvc.HtmlHelpers
+@{
+    ViewBag.Title = "Become Member";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<section class="text">
+    <h3>Be smart, claim discounts right now and...</h3>
+    <h1>@ViewBag.Title.</h1>
+</section>
+
+@if (User.IsInRole("NonMember"))
+{
+
+using (Html.BeginForm("BecomeMember", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.SelectedMembershipType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(viewModel => viewModel.SelectedMembershipType, new SelectList(Model.MembershipType.Where(p => p.Id == "MemberFull" || p.Id == "MemberAssociate"), "Id", "Name"), "-- Select membership type --", new { @id = "purpose" })
+        @Html.ValidationMessageFor(viewModel => viewModel.SelectedMembershipType)
+        </div>
+    </div>
+
+        <div>Card details for member subscription:</div>
+        <br />
+        <div class="form-group">
+            <label for="CardOwner" class="control-label col-md-2">Card Owner:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CardOwner)
+                <input type="button" value="Test Data" onclick="XTest();" class="btn" style="display:inline" />
+                @Html.ValidationMessageFor(model => model.CardOwner)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="CardType" class="control-label col-md-2">Card Type:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CardType)
+                @Html.ValidationMessageFor(model => model.CardType)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="CardNumber" class="control-label col-md-2">Card Number:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CardNumber)
+                @Html.ValidationMessageFor(model => model.CardNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="CSC" class="control-label col-md-2">CSC:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CSC)
+                @Html.ValidationMessageFor(model => model.CSC)
+            </div>
+        </div>
+
+    @*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.Captcha("Try another", "Enter the text you see above:", 5, "Is required field", true)
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Register" />
+        </div>
+    </div>
+    }
+
+}
+else if (User.IsInRole("MemberFull") || User.IsInRole("MemberAssociate"))
+{
+    <br/>
+    <h4>You already are a member, email admin if you wish to make any changes.</h4>
+}
+else if (User.IsInRole("Admin"))
+{
+    <br />
+    <h4>Your an administrator, no need to see this page :)</h4>
+}
+else
+{
+    <br />
+    <h4>You need to register first to become a member</h4>
+    <a class="btn btn-default" aria-label="Left Align" href="~/Account/Register">Register</a>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    function XTest() {
+        //document.getElementById("Email").value = "test@test.com";
+        //document.getElementById("Password").value = "Test12#";
+        //document.getElementById("ConfirmPassword").value = "Test12#";
+
+        document.getElementById("CardOwner").value = "Mr Tester";
+        document.getElementById("CardType").value = "Visa";
+        document.getElementById("CardNumber").value = "1111";
+        document.getElementById("CSC").value = "111";
+    }
+</script>

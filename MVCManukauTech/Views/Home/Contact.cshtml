@@ -1,0 +1,70 @@
+﻿@model MVCManukauTech.Models.HomeContactViewModel
+@{
+    ViewBag.Title = "Contact Us";
+}
+<section class="text">
+    <hgroup>
+        <h3>@ViewBag.Message</h3>
+        <h1>@ViewBag.Title.</h1>
+    </hgroup>
+</section>
+
+<div id="readyonly">
+        <address>
+            @Model.Address1<br />
+            @Model.Address2<br />
+            <abbr title="Phone">P:</abbr>@Model.Phone
+        </address>
+
+    <address>
+        <i class="icon-envelope"></i><strong>Support:</strong>   <a href="mailto:@Model.SupportEmail">@Model.SupportEmail</a><br />
+        <i class="icon-envelope"></i><strong>Marketing:</strong> <a href="mailto:@Model.MarketingEmail">@Model.MarketingEmail</a>
+    </address>
+    @if (this.User.IsInRole("Admin"))
+    {
+        <center>
+            <a href="#" class="btn btn-default" onclick="editcontent()">Edit</a>
+        </center>
+    }
+</div>
+
+<div id="writeonly" class="hidden">
+    @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
+        <span>Address 1:</span> @Html.TextBoxFor(viewModel => viewModel.Address1)
+        <br />
+        <span>Address 2:</span> @Html.TextBoxFor(viewModel => viewModel.Address2)
+        <br />
+        <span>Phone:</span> @Html.TextBoxFor(viewModel => viewModel.Phone)
+        <br />
+        <span>Marketing Email:</span> @Html.TextBoxFor(viewModel => viewModel.MarketingEmail)
+        <br />
+        <span>Support Email:</span> @Html.TextBoxFor(viewModel => viewModel.SupportEmail)
+        <br />
+        <button class="btn btn-success" type="submit">Update</button>
+        <br />
+        <a onclick="onendedit()" href="#" class="btn btn-default">Cancel</a>
+    }
+</div>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<style>
+    address {
+        text-align: center;
+        font-size: 20px;
+    }
+
+</style>
+
+<script type="text/javascript">
+    function editcontent() {
+        $("#readyonly").addClass("hidden");
+        $("#writeonly").removeClass("hidden");
+    }
+
+    function onendedit() {
+        $("#writeonly").addClass("hidden");
+        $("#readyonly").removeClass("hidden");
+    }
+</script>

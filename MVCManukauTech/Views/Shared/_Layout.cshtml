@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="~/Home">Home</a></li>
+                    <li><a href="~/Home/About">About</a></li>
+                    <li><a href="~/Home/Contact">Contact</a></li>
+                    <li><a href="~/Account/BecomeMember">Become Member</a></li>
+                    @*140904 JPC add ProductsAdmin to links visible only to role Admin*@
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li><a href="~/Products">ProductsAdmin</a></li>
+                        @*<li><a href="@Url.Action("index", "ContentAdmin")">ContentAdmin</a></li>*@
+                        <li><a href="~/RolesAdmin">RolesAdmin</a></li>
+                        <li><a href="~/UsersAdmin">UsersAdmin</a></li>
+                    }
+                </ul>
+
+                <ul class="nav navbar-nav">
+
+                    <li><a href="~/Catalog?CategoryName=Tools">Tools</a></li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @if (Request.IsAuthenticated && ViewBag.IsMembershipExpired)
+        {
+            <div style="margin-top: 60px; color: red; font-weight: bold; font-size: 20px;">Your annual membership has expired, please renew to get awesome discounts!!</div>
+        }
+        @RenderBody()
+        <hr />
+        <footer>
+            <center> <p>&copy; 2017 Builders Association.</p></center>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

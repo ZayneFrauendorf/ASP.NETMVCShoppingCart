@@ -1,0 +1,126 @@
+﻿@model PagedList.IPagedList<MVCManukauTech.Models.Product>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    //Are we showing all the products or only one category?
+    if (ViewBag.CategoryName == null)
+    {
+        ViewBag.Title = "Catalog";
+    }
+    else
+    { 
+        ViewBag.Title = "Catalog - " + ViewBag.CategoryName;
+    }
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<section class="text">
+    <h3>Before you go, check out our...</h3>
+    <h1>@ViewBag.Title</h1>
+</section>
+
+<form action="" class="searchForm">
+    <input type="text" list="suggestions" onkeyup="AutoComplete(this.value)" name="searchString" />
+    <datalist id="suggestions"></datalist>
+    <input type="submit" class="btn btn-default" />
+</form>
+
+<div class="products">
+    <table class="table table-fill">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Unit Cost
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Category
+            </th>
+            <th>Add to Cart</th>
+            <th>Details</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    <img src="/Images/@item.ImageFileName" style="width:100px" />
+                </td>
+                <td style="text-align: right">
+                    @item.UnitCost
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Category.CategoryName
+                </td>
+                <td>
+                    <input type="button" class="btn btn-default" value="Add to Cart" onclick="NavCart('@item.ProductId')" />
+                </td>
+                <td>
+                    <input type="button" class="btn btn-default" value="Details" onclick="NavDetails('@item.ProductId')" />
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, CategoryName = "Tools" }))
+
+<script type="text/javascript">
+    function NavDetails(ProductId)
+    {
+        window.location.replace("/Catalog/Details?ProductId=" + ProductId);
+    }
+
+    function NavCart(ProductId) {
+        window.location.replace("/OrderDetails/ShoppingCart?ProductId=" + ProductId);
+    }
+
+    function AutoComplete(searchedText) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function () {
+            var response = xmlhttp.responseText;
+            var jsonOptions = JSON.parse(response);
+            var dataList = document.getElementById("suggestions")
+            dataList.innerHTML = "";
+            for (var i = 0; i < jsonOptions.length; i++) {
+
+                var option = document.createElement('option');
+                option.value = jsonOptions[i];
+                dataList.appendChild(option);
+            }
+        };
+
+        xmlhttp.open("POST", "/Catalog/searchingOptions", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("searchedText=" + searchedText);
+
+
+
+    }
+</script>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e63d0f236d2249c692f5d60a4531763b" Name="Diagram1">
+        <EntityTypeShape EntityType="XSpy2Model.Category" Width="1.5" PointX="0.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="XSpy2Model.OrderDetail" Width="1.5" PointX="4.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="XSpy2Model.Order" Width="1.5" PointX="6.375" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="XSpy2Model.OrderStatus" Width="1.5" PointX="8.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="XSpy2Model.Product" Width="1.5" PointX="2.5" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="XSpy2Model.FK_Products_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="XSpy2Model.FK_OrderDetails_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="XSpy2Model.FK_OrderDetails_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="XSpy2Model.FK_Orders_OrderStatus" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="XSpy2Model.Review" Width="1.5" PointX="0.5" PointY="4" />
+        <AssociationConnector Association="XSpy2Model.FK_Reviews_Products" />
+        <EntityTypeShape EntityType="XSpy2Model.SiteContent" Width="1.5" PointX="2.5" PointY="5.375" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,52 @@
+﻿@model MVCManukauTech.Models.HomeContactViewModel
+@{
+    ViewBag.Title = "About";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<section class="text">
+    <hgroup>
+        <h3>@ViewBag.Message</h3>
+        <h1>@ViewBag.Title.</h1>
+
+    </hgroup>
+</section>
+<br />
+<div id="readyonly">
+    <center>
+        <p class="aboutContent">@Model.AboutContent</p>
+    </center>
+    @if (this.User.IsInRole("Admin"))
+    {
+        <center>
+            <a href="#" class="btn btn-default" onclick="editcontent()">Edit</a>
+        </center>
+    }
+</div>
+<div id="writeonly" class="hidden">
+    @using (Html.BeginForm("About", "Home", FormMethod.Post, new { autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
+        <span>About Content:</span> 
+
+        @*<textarea class="aboutText">@Model.AboutContent</textarea>*@
+        @Html.TextAreaFor(viewModel => viewModel.AboutContent, new { @class = "aboutText" })
+      
+        <br />
+            <button class="btn btn-success" type="submit">Update</button>
+            <br />
+            <a onclick="onendedit()" href="#" class="btn btn-default">Cancel</a>
+    }
+</div>
+
+<script type="text/javascript">
+    function editcontent() {
+        $("#readyonly").addClass("hidden");
+        $("#writeonly").removeClass("hidden");
+    }
+    function onendedit() {
+        $("#writeonly").addClass("hidden");
+        $("#readyonly").removeClass("hidden");
+    }
+</script>
+

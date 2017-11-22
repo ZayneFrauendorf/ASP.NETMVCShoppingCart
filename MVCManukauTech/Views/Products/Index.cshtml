@@ -1,0 +1,61 @@
+﻿@model IEnumerable<MVCManukauTech.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Products Admin</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    <table class="table">
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.ImageFileName)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.UnitCost)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.ImageFileName)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.UnitCost)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+              
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
